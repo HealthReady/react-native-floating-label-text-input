@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import {StyleSheet, Text, View, TextInput, Animated} from 'react-native';
+import {StyleSheet, Text, View, TextInput, Animated, Platform} from 'react-native';
 
 var FloatingLabel = React.createClass({
     getInitialState: function () {
@@ -130,7 +130,6 @@ var FloatLabelTextField = React.createClass({
                                 keyboardType={this.props.keyboardType}
                                 autoCapitalize={this.props.autoCapitalize}
                                 autoCorrect={this.props.autoCorrect}
-
                                 autoFocus={this.props.autoFocus}
                                 placeHolderTextColor={this.props.placeHolderTextColor}
                                 clearTextOnFocus={this.props.clearTextOnFocus}
@@ -171,7 +170,7 @@ var FloatLabelTextField = React.createClass({
         if (this.state.focussed) {
             return [styles.fieldLabel, styles.focussed, this.props.focusLabelStyle];
         }
-        return [styles.fieldLabel];
+        return [styles.fieldLabel, this.props.labelStyle];
     },
 
     placeholderValue: function () {
@@ -231,7 +230,7 @@ var styles = StyleSheet.create({
         borderColor: '#C8C7CC',
     },
     valueText: {
-        height: 20,
+        height: (Platform.OS === 'ios') ? 20 : null,
         fontSize: 16,
         color: '#111111'
     },
