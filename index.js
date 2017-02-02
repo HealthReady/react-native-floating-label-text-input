@@ -139,6 +139,7 @@ var FloatLabelTextField = React.createClass({
                                 returnKeyType={this.props.returnKeyType}
                                 onKeyPress={this.props.onKeyPress}
                                 onContentSizeChange={this.props.onContentSizeChange}
+                                multiline={this.props.multiline}
                             />
                         </TextFieldHolder>
                     </View>
