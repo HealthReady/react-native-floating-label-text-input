@@ -140,6 +140,7 @@ var FloatLabelTextField = React.createClass({
                                 onKeyPress={this.props.onKeyPress}
                                 onContentSizeChange={this.props.onContentSizeChange}
                                 multiline={this.props.multiline}
+                                underlineColorAndroid={this.props.underlineColorAndroid ? this.props.underlineColorAndroid : 'transparent'}
                             />
                         </TextFieldHolder>
                     </View>
@@ -229,9 +230,10 @@ var styles = StyleSheet.create({
     withBorder: {
         borderBottomWidth: 1 / 2,
         borderColor: '#C8C7CC',
+        backgroundColor: 'transparent'
     },
     valueText: {
-        height: (Platform.OS === 'ios') ? 20 : null,
+        height: (Platform.OS === 'ios') ? 20 : 60,
         fontSize: 16,
         color: '#111111'
     },
