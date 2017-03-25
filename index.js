@@ -218,8 +218,8 @@ var styles = StyleSheet.create({
         left: 0
     },
     fieldLabel: {
-        height: 10,
-        fontSize: 9,
+    height: 15,
+    fontSize: 10,
         color: '#B1B1B1'
     },
     fieldContainer: {
@@ -233,8 +233,9 @@ var styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     valueText: {
-        height: (Platform.OS === 'ios') ? 20 : 60,
+        height: Platform.OS == 'ios' ? 20 : 40,
         fontSize: 16,
+        marginLeft: Platform.OS == 'android' ? -4 : 0,
         color: '#111111'
     },
     withMargin: {
