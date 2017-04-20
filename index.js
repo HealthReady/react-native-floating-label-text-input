@@ -118,6 +118,7 @@ var FloatLabelTextField = React.createClass({
                             <TextInput
                                 ref="innerInput"
                                 placeholder={this.props.placeholder}
+                                placeholderTextColor={this.props.placeholderTextColor}
                                 style={[styles.valueText, this.props.style]}
                                 defaultValue={this.props.defaultValue}
                                 value={this.state.text}
@@ -131,7 +132,6 @@ var FloatLabelTextField = React.createClass({
                                 autoCapitalize={this.props.autoCapitalize}
                                 autoCorrect={this.props.autoCorrect}
                                 autoFocus={this.props.autoFocus}
-                                placeHolderTextColor={this.props.placeHolderTextColor}
                                 clearTextOnFocus={this.props.clearTextOnFocus}
                                 blurOnSubmit={this.props.blurOnSubmit}
                                 onSubmitEditing={this.props.onSubmitEditing}
