@@ -88,7 +88,7 @@ var FloatLabelTextField = React.createClass({
 
     withBorder: function () {
         if (!this.props.noBorder) {
-            return styles.withBorder;
+            return [styles.withBorder, this.props.borderStyle];
         }
     },
 
@@ -107,44 +107,47 @@ var FloatLabelTextField = React.createClass({
 
     render: function () {
         return (
-            <View style={[styles.container, this.props.backgroundStyle]}>
-                <View style={styles.viewContainer}>
-                    {this.props.hasPadding ? <View style={styles.paddingView}></View> : null}
-                    <View style={[styles.fieldContainer, this.withBorder()]}>
-                        <FloatingLabel visible={this.state.text}>
-                            <Text style={[styles.fieldLabel, this.labelStyle()]}>{this.placeholderValue()}</Text>
-                        </FloatingLabel>
-                        <TextFieldHolder withValue={this.state.text} style={this.props.inputHolderStyle}>
-                            <TextInput
-                                ref="innerInput"
-                                placeholder={this.props.placeholder}
-                                placeholderTextColor={this.props.placeholderTextColor}
-                                style={[styles.valueText, this.props.style]}
-                                defaultValue={this.props.defaultValue}
-                                value={this.state.text}
-                                maxLength={this.props.maxLength}
-                                selectionColor={this.props.selectionColor}
-                                onFocus={this.setFocus}
-                                onBlur={this.unsetFocus}
-                                onChangeText={this.setText}
-                                secureTextEntry={this.props.secureTextEntry}
-                                keyboardType={this.props.keyboardType}
-                                autoCapitalize={this.props.autoCapitalize}
-                                autoCorrect={this.props.autoCorrect}
-                                autoFocus={this.props.autoFocus}
-                                clearTextOnFocus={this.props.clearTextOnFocus}
-                                blurOnSubmit={this.props.blurOnSubmit}
-                                onSubmitEditing={this.props.onSubmitEditing}
-                                onEndEditing={this.props.onEndEditing}
-                                returnKeyType={this.props.returnKeyType}
-                                onKeyPress={this.props.onKeyPress}
-                                onContentSizeChange={this.props.onContentSizeChange}
-                                multiline={this.props.multiline}
-                                underlineColorAndroid={this.props.underlineColorAndroid ? this.props.underlineColorAndroid : 'transparent'}
-                            />
-                        </TextFieldHolder>
+            <View>
+                <View style={[styles.container, this.props.backgroundStyle]}>
+                    <View style={styles.viewContainer}>
+                        {this.props.hasPadding ? <View style={styles.paddingView}></View> : null}
+                        <View style={[styles.fieldContainer, this.withBorder()]}>
+                            <FloatingLabel visible={this.state.text}>
+                                <Text style={[styles.fieldLabel, this.labelStyle()]}>{this.placeholderValue()}</Text>
+                            </FloatingLabel>
+                            <TextFieldHolder withValue={this.state.text} style={this.props.inputHolderStyle}>
+                                <TextInput
+                                    ref="innerInput"
+                                    placeholder={this.props.placeholder}
+                                    placeholderTextColor={this.props.placeholderTextColor}
+                                    style={[styles.valueText, this.props.style]}
+                                    defaultValue={this.props.defaultValue}
+                                    value={this.state.text}
+                                    maxLength={this.props.maxLength}
+                                    selectionColor={this.props.selectionColor}
+                                    onFocus={this.setFocus}
+                                    onBlur={this.unsetFocus}
+                                    onChangeText={this.setText}
+                                    secureTextEntry={this.props.secureTextEntry}
+                                    keyboardType={this.props.keyboardType}
+                                    autoCapitalize={this.props.autoCapitalize}
+                                    autoCorrect={this.props.autoCorrect}
+                                    autoFocus={this.props.autoFocus}
+                                    clearTextOnFocus={this.props.clearTextOnFocus}
+                                    blurOnSubmit={this.props.blurOnSubmit}
+                                    onSubmitEditing={this.props.onSubmitEditing}
+                                    onEndEditing={this.props.onEndEditing}
+                                    returnKeyType={this.props.returnKeyType}
+                                    onKeyPress={this.props.onKeyPress}
+                                    onContentSizeChange={this.props.onContentSizeChange}
+                                    multiline={this.props.multiline}
+                                    underlineColorAndroid={this.props.underlineColorAndroid ? this.props.underlineColorAndroid : 'transparent'}
+                                />
+                            </TextFieldHolder>
+                        </View>
                     </View>
                 </View>
+                {this.props.children}
             </View>
         );
     },
