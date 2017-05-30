@@ -1,7 +1,8 @@
 'use strict';
 
-import React from 'react';
+import React, {PropTypes} from 'react';
 import {StyleSheet, Text, View, TextInput, Animated, Platform} from 'react-native';
+const ANDROID_PLATFORM = (Platform.OS === 'android');
 
 var FloatingLabel = React.createClass({
     getInitialState: function () {
@@ -65,20 +66,40 @@ var TextFieldHolder = React.createClass({
 });
 
 var FloatLabelTextField = React.createClass({
+    propTypes: {
+        autoGrowing: PropTypes.bool,
+        containerHeightOffset: PropTypes.number,
+        initialHeight: PropTypes.number,
+        minHeight: PropTypes.number,
+        maxHeight: PropTypes.number
+    },
+
+    getDefaultProps: function() {
+        return {
+            autoGrowing: false,
+            containerHeightOffset: 8,
+            initialHeight: 37,
+            minHeight: 37,
+            maxHeight: 300
+        };
+    },
+
     getInitialState: function () {
         if (this.props.defaultValue && this.props.defaultValue.length > 0) {
             return {
                 focussed: this.props.autoFocus ? this.props.autoFocus : false,
+                height: this._getValidHeight(this.props.initialHeight),
+                androidFirstContentSizeChange: true,
                 text: this.props.defaultValue,
             };
         }
         return {
             focussed: false,
+            height: this._getValidHeight(this.props.initialHeight),
+            androidFirstContentSizeChange: true,
             text: this.props.value
         };
     },
-
-    propTypes: {},
 
     componentWillReceiveProps: function (newProps) {
         if (newProps.hasOwnProperty('value') && newProps.value !== this.state.text) {
@@ -105,10 +126,60 @@ var FloatLabelTextField = React.createClass({
         this.setState({text: ''});
     },
 
+    _onContentSizeChange: function(event) {
+        if(ANDROID_PLATFORM) {
+            if(!this.state.androidFirstContentSizeChange) {
+                return;
+            }
+            this.setState({androidFirstContentSizeChange: false});
+        }
+        this._handleNativeEvent(event.nativeEvent);
+
+        if (this.props.onContentSizeChange) {
+            this.props.onContentSizeChange(event);
+        }
+    },
+
+    _getValidHeight: function(height) {
+        const minCappedHeight = Math.max(this.props.minHeight, height);
+        if(this.props.maxHeight == null) {
+            return minCappedHeight;
+        }
+        return Math.min(this.props.maxHeight, minCappedHeight);
+    },
+
+    _onChange: function(event) {
+        if(ANDROID_PLATFORM && !this.state.androidFirstContentSizeChange) {
+            this._handleNativeEvent(event.nativeEvent);
+        }
+        if (this.props.onChange) {
+            this.props.onChange(event);
+        }
+    },
+
+    _handleNativeEvent: function(nativeEvent) {
+        let newHeight = this.state.height;
+        if (nativeEvent.contentSize && this.props.autoGrowing) {
+            newHeight = nativeEvent.contentSize.height;
+            if (this.state.height !== newHeight && newHeight <= this.props.maxHeight && this.props.onHeightChanged) {
+                this.props.onHeightChanged(newHeight, this.state.height, newHeight - this.state.height);
+            }
+        }
+
+        // if (this.props.animation.animated) {
+        //     const duration = this.props.animation.duration || DEFAULT_ANIM_DURATION;
+        //     LayoutAnimation.configureNext({...LayoutAnimation.Presets.easeInEaseOut, duration: duration});
+        // }
+
+        this.setState({
+            height: newHeight
+        });
+    },
+
     render: function () {
         return (
             <View>
-                <View style={[styles.container, this.props.backgroundStyle]}>
+                <View style={[styles.container, this.props.backgroundStyle, this.props.autoGrowing && {height: this._getValidHeight(this.state.height) + this.props.containerHeightOffset}]}>
                     <View style={styles.viewContainer}>
                         {this.props.hasPadding ? <View style={styles.paddingView}></View> : null}
                         <View style={[styles.fieldContainer, this.withBorder()]}>
@@ -120,14 +191,15 @@ var FloatLabelTextField = React.createClass({
                                     ref="innerInput"
                                     placeholder={this.props.placeholder}
                                     placeholderTextColor={this.props.placeholderTextColor}
-                                    style={[styles.valueText, this.props.style]}
+                                    style={[styles.valueText, this.props.style, this.props.autoGrowing && {height: this._getValidHeight(this.state.height)}]}
                                     defaultValue={this.props.defaultValue}
                                     value={this.state.text}
                                     maxLength={this.props.maxLength}
                                     selectionColor={this.props.selectionColor}
                                     onFocus={this.setFocus}
                                     onBlur={this.unsetFocus}
-                                    onChangeText={this.setText}
+                                    onChange={this._onChange}
+                                    //onChangeText={this.setText}
                                     secureTextEntry={this.props.secureTextEntry}
                                     keyboardType={this.props.keyboardType}
                                     autoCapitalize={this.props.autoCapitalize}
@@ -139,7 +211,7 @@ var FloatLabelTextField = React.createClass({
                                     onEndEditing={this.props.onEndEditing}
                                     returnKeyType={this.props.returnKeyType}
                                     onKeyPress={this.props.onKeyPress}
-                                    onContentSizeChange={this.props.onContentSizeChange}
+                                    onContentSizeChange={this._onContentSizeChange}
                                     multiline={this.props.multiline}
                                     underlineColorAndroid={this.props.underlineColorAndroid ? this.props.underlineColorAndroid : 'transparent'}
                                 />
