@@ -2,9 +2,11 @@
 
 import React, {PropTypes} from 'react';
 import {StyleSheet, Text, View, TextInput, Animated, Platform} from 'react-native';
+var createReactClass = require('create-react-class');
+
 const ANDROID_PLATFORM = (Platform.OS === 'android');
 
-var FloatingLabel = React.createClass({
+var FloatingLabel = createReactClass({
     getInitialState: function () {
         var initialPadding = 9;
         var initialOpacity = 0;
@@ -42,7 +44,7 @@ var FloatingLabel = React.createClass({
     }
 });
 
-var TextFieldHolder = React.createClass({
+var TextFieldHolder = createReactClass({
     getInitialState: function () {
         return {
             marginAnim: new Animated.Value(this.props.withValue ? 10 : 0)
@@ -65,7 +67,7 @@ var TextFieldHolder = React.createClass({
     }
 });
 
-var FloatLabelTextField = React.createClass({
+var FloatLabelTextField = createReactClass({
     propTypes: {
         autoGrowing: PropTypes.bool,
         containerHeightOffset: PropTypes.number,
@@ -293,8 +295,8 @@ var styles = StyleSheet.create({
         left: 0
     },
     fieldLabel: {
-    height: 15,
-    fontSize: 10,
+        height: 15,
+        fontSize: 10,
         color: '#B1B1B1'
     },
     fieldContainer: {
