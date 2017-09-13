@@ -277,7 +277,7 @@ var FloatLabelTextField = createReactClass({
 
 var styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flexGrow: 1,
         height: 45,
         backgroundColor: 'white',
         justifyContent: 'center'
